@@ -1,0 +1,64 @@
+/* Estilo geral para o modo escuro */
+.root {
+    -fx-background-color: #1e1e1e !important;
+    -fx-text-fill: #ffffff !important;
+}
+
+/* Botões de controle da janela */
+#closeButton {
+    -fx-background-color: #e06c75;
+}
+
+#minimizeButton {
+    -fx-background-color: #d19a66;
+}
+
+#maximizeButton {
+    -fx-background-color: #98c379;
+}
+
+/* Campo de texto e senha */
+#emailField, #passwordField {
+    -fx-background-color: #2e2e2e !important;
+    -fx-text-fill: #ffffff !important;
+    -fx-border-color: #4b4b4b !important;
+    -fx-border-radius: 5 !important;
+    -fx-background-radius: 5 !important;
+    -fx-prompt-text-fill: #808080 !important;
+}
+
+#emailField:focused, #passwordField:focused {
+    -fx-border-color: #61afef !important;
+}
+
+/* Botões principais */
+#loginButton {
+    -fx-background-color: #61afef !important;
+    -fx-text-fill: #ffffff !important;
+}
+
+#signUpButton {
+    -fx-background-color: #9a62ba !important;
+    -fx-text-fill: #ffffff !important;
+}
+
+#loginButton:hover, #signUpButton:hover {
+    -fx-background-color: #56b5f0 !important; /* Para o loginButton */
+    -fx-background-color: #b574d5 !important; /* Para o signUpButton */
+}
+
+/* Botão de alternar tema */
+#toggleThemeButton {
+    -fx-background-color: #3e3e3e !important;
+    -fx-text-fill: #ffffff !important;
+    -fx-border-color: #4b4b4b !important;
+}
+
+/* Barras de navegação */
+.top {
+    -fx-background-color: #2e2e2e !important;
+}
+
+#hboxContainer {
+    -fx-background-color: #1e1e1e !important;
+}
