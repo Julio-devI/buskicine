@@ -98,20 +98,15 @@ public class RegisterController {
 
     private void navigateToLogin() {
         try {
-            // Load the Login FXML
-            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/com/example/projetoptwo/login-view.fxml"));
             javafx.scene.Parent loginView = loader.load();
 
-            // Get the LoginController
             LoginController loginController = loader.getController();
 
-            // Pass the stage
             loginController.setStage(stage);
 
-            // Create a new scene
-            javafx.scene.Scene loginScene = new javafx.scene.Scene(loginView);
+            javafx.scene.Scene loginScene = new javafx.scene.Scene(loginView, 600,400);
 
-            // Set the new scene
             stage.setScene(loginScene);
             stage.show();
 

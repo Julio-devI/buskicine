@@ -47,16 +47,19 @@ public class LoginController {
 
     private void navigateToSignUp() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projetoptwo/signup.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projetoptwo/signup-view.fxml"));
             Parent signUpView = loader.load();
 
             RegisterController registercontroller = loader.getController();
 
             registercontroller.setStage(stage);
 
-            Scene signUpScene = new Scene(signUpView);
+            Scene signUpScene = new Scene(signUpView, 600, 400);
+            stage.setScene(signUpScene);
+            stage.show();
         } catch (IOException e) {
-
+            showAlert("Error", "Não foi possível carregar a tela de cadastro: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
