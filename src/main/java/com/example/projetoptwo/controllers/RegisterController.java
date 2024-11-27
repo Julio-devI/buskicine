@@ -51,7 +51,7 @@ public class RegisterController {
         }
 
         if(!password.equals(confirmPassword)) {
-            showAlert("Erro", "Por favor, Insira um endereço de e-mail válido");
+            showAlert("Erro", "As senhas não coincidem, por favor insira as senhas iguais");
             return;
         }
 
@@ -118,7 +118,7 @@ public class RegisterController {
 
     private boolean isValidEmail(String email)
     {
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
         return email.matches(emailRegex);
     }
 

@@ -21,18 +21,6 @@
                     <Button fx:id="maximizeButton" style="-fx-background-color: #28C840; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
                 </HBox>
             </HBox>
-
-            <Label text="Registrar-se"
-                   style="-fx-background-color: white; -fx-text-fill: #333;"
-                   alignment="CENTER"
-                   maxWidth="Infinity">
-                <font>
-                    <Font name="System Bold" size="20"/>
-                </font>
-                <padding>
-                    <Insets top="10" bottom="10"/>
-                </padding>
-            </Label>
         </top>
 
         <center>
