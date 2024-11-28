@@ -24,7 +24,7 @@ public class RegisterController {
 
     private Stage stage;
 
-    private static final String path = "/com/example/projetoptwo/database/users.txt";
+    private static final String path = "database/users.txt";
 
     public void initialize() {
         registerButton.setOnAction(e -> handleSignUp());
@@ -40,17 +40,19 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
+        System.out.println(new File("database/users.txt").getAbsolutePath());
+
         if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             showAlert("Erro", "Por favor, preencha todos os campos");
             return;
         }
 
         if (!isValidEmail(email)) {
-            showAlert("Erro", "Por favor, Insira um endereço de e-mail válido");
+            showAlert("Erro", "Por favor, insira um endereço de e-mail válido");
             return;
         }
 
-        if(!password.equals(confirmPassword)) {
+        if (!password.equals(confirmPassword)) {
             showAlert("Erro", "As senhas não coincidem, por favor insira as senhas iguais");
             return;
         }
@@ -58,7 +60,7 @@ public class RegisterController {
         try {
             if (UserAlreadyExists(email)) {
                 showAlert("Erro", "Este e-mail já está cadastrado");
-                return;
+                return; // Adicionado para interromper o fluxo
             }
 
             saveUser(email, password);
@@ -68,7 +70,18 @@ public class RegisterController {
             passwordField.clear();
             confirmPasswordField.clear();
         } catch (IOException e) {
-            showAlert("Erro", "Não foi possível salvar o cadastro" + e.getMessage());
+            e.printStackTrace();
+            showAlert("Erro", "Não foi possível salvar o cadastro: " + e.getMessage());
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("database/users.txt"))) {
+            String line;
+            System.out.println("Conteúdo atual do arquivo users.txt:");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -76,10 +89,9 @@ public class RegisterController {
         try (BufferedReader leitor = new BufferedReader(new FileReader(path))) {
             String linha;
             while ((linha = leitor.readLine()) != null) {
-                // Dividir a linha em email e senha
                 String[] partes = linha.split(";");
                 if (partes.length > 0 && partes[0].equalsIgnoreCase(email)) {
-                    return true; // Usuário encontrado
+                    return true;
                 }
             }
         } catch (IOException e) {
@@ -89,12 +101,20 @@ public class RegisterController {
     }
 
     private void saveUser(String email, String password) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path, true)))
-        {
+        File file = new File("database/users.txt");
+
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
             writer.write(email + ";" + password);
             writer.newLine();
+            System.out.println("Usuário salvo com sucesso: " + email);
         }
     }
+
 
     private void navigateToLogin() {
         try {
