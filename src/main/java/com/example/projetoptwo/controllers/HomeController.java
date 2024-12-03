@@ -100,6 +100,7 @@ public class HomeController {
             // Basic parsing to extract movie titles
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(responseBody);
+            //System.out.println(rootNode);
             JsonNode resultsNode = rootNode.get("results");
 
             moviesList.clear();
