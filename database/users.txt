@@ -4,3 +4,4 @@ faria@gmail.com;123
 joaof@gmail.com;123
 ocimar@gmail.com;123
 usuario@gmail.com;123
+usuario@exemplo.com;123

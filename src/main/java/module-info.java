@@ -9,7 +9,8 @@ module com.example.projetoptwo {
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
-    requires java.desktop;
+    requires java.net.http;
+    requires com.fasterxml.jackson.databind;
 
     opens com.example.projetoptwo to javafx.fxml;
     exports com.example.projetoptwo;
