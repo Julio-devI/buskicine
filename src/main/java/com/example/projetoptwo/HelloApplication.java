@@ -19,7 +19,7 @@ public class HelloApplication extends Application {
         LoginController controller = loader.getController();
         controller.setStage(stage);
 
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 600, 500);
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
