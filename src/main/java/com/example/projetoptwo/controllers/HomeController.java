@@ -22,6 +22,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class HomeController {
@@ -44,7 +45,8 @@ public class HomeController {
     private Stage stage;
     private double xOffset = 0, yOffset = 0;
 
-    private int currentPage = 1;
+    Random random = new Random();
+    private int currentPage = random.nextInt(20);
 
     private static final String path = "database/films.txt";
 
@@ -94,7 +96,7 @@ public class HomeController {
     }
 
     private void fetchSingleMovie() {
-        String endpoint = BASE_URL + "/movie/popular?api_key=" + API_KEY + "&language=pt-BR&page=" + currentPage;
+        String endpoint = BASE_URL + "/discover/movie?api_key=" + API_KEY + "&language=pt-BR&page=" + currentPage;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
