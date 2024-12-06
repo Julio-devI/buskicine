@@ -4,15 +4,23 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.GridPane?>
 
-<BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.projetoptwo.controllers.HomeController">
+<BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.projetoptwo.controllers.HomeController"
+            styleClass="root-pane">
+
+    <!-- Window Title Bar with MacOS-like Close, Minimize, Maximize Buttons -->
     <top>
-        <HBox fx:id="hboxContainer" style="-fx-background-color: #E5E5E5; -fx-padding: 5;">
-            <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 5;">
+        <HBox fx:id="windowTitleBar"
+              style="-fx-background-color: #E5E5E5;
+                     -fx-padding: 10;
+                     -fx-background-insets: 0;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button fx:id="closeButton" style="-fx-background-color: #FF5F57; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
                 <Button fx:id="minimizeButton" style="-fx-background-color: #FFBD2E; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
                 <Button fx:id="maximizeButton" style="-fx-background-color: #28C840; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
@@ -22,18 +30,52 @@
 
     <center>
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;">
-            <Button fx:id="fetchMoviesButton" text="Carregar Filmes" />
-            <Label fx:id="apiResultLabel" style="-fx-font-size: 14;" />
+            <!-- Movie Fetch Button with Improved Styling -->
+            <Button
+                    text="Carregar Filmes"
+                    style="-fx-pref-width: 200px;"/>
 
-            <ScrollPane HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fitToWidth="true">
-                <GridPane
-                        fx:id="moviesGridPane"
-                        hgap="10"
-                        vgap="10"
-                        alignment="CENTER"
-                        style="-fx-padding: 10;"
-                />
-            </ScrollPane>
+            <HBox
+                    fx:id="movieDetailsContainer"
+                    spacing="20"
+                    style="-fx-background-color: white;
+                       -fx-padding: 20;
+                       -fx-background-radius: 10;
+                       -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);">
+
+                <!-- Movie Poster Section -->
+                <VBox alignment="CENTER_LEFT" spacing="10">
+                    <ImageView
+                            fx:id="resultImageView"
+                            fitWidth="200"
+                            fitHeight="300"
+                            preserveRatio="true"
+                            style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+                </VBox>
+
+                <!-- Movie Details Text Section -->
+                <VBox spacing="15" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
+                    <Label
+                            fx:id="resultTitleLabel"
+                            text="Título do Filme"/>
+
+                    <Label
+                            fx:id="resultOverviewLabel"
+                            text="Descrição do filme vai aqui. Um texto explicativo que pode ser longo ou curto, dependendo do conteúdo."
+                            wrapText="true"/>
+
+                    <!-- Action Buttons -->
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <Button
+                                fx:id="saveMovieButton"
+                                text="Match"/>
+
+                        <Button
+                                fx:id="fetchMoviesButton"
+                                text="Próximo Filme"/>
+                    </HBox>
+                </VBox>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>

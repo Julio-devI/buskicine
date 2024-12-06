@@ -2,6 +2,7 @@ package com.example.projetoptwo.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -28,28 +30,38 @@ public class HomeController {
     private BorderPane root;
 
     @FXML
-    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton;
+    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton, saveMovieButton;
 
     @FXML
-    private Label apiResultLabel;
+    private Label resultTitleLabel;
 
     @FXML
-    private GridPane moviesGridPane;
+    private Label resultOverviewLabel;
+
+    @FXML
+    private ImageView resultImageView;
 
     private Stage stage;
     private double xOffset = 0, yOffset = 0;
 
+    private int currentPage = 1;
+
+    private static final String path = "database/films.txt";
+
     public static class movieData {
         private String title;
         private String imageUrl;
+        private String overview;
 
-        public movieData(String title, String imageUrl) {
+        public movieData(String title, String imageUrl, String overview) {
             this.title = title;
             this.imageUrl = imageUrl;
+            this.overview = overview;
         }
 
         public String getTitle() { return title; }
         public String getImageUrl() { return imageUrl; }
+        public String getOverview() { return overview; }
     }
 
     private List<movieData> moviesList = new ArrayList<>();
@@ -64,6 +76,7 @@ public class HomeController {
         setupWindowControls();
         makeStageDraggable();
         setupMovieFetching();
+        setupSaveMovie();
     }
 
     public void setupWindowControls()
@@ -76,12 +89,12 @@ public class HomeController {
     private void setupMovieFetching()
     {
         if (fetchMoviesButton != null) {
-            fetchMoviesButton.setOnAction( e -> fetchPopularMovies());
+            fetchMoviesButton.setOnAction( e -> fetchSingleMovie());
         }
     }
 
-    private void fetchPopularMovies () {
-        String endpoint = BASE_URL + "/movie/popular?api_key=" + API_KEY + "&language=pt-BR";
+    private void fetchSingleMovie() {
+        String endpoint = BASE_URL + "/movie/popular?api_key=" + API_KEY + "&language=pt-BR&page=" + currentPage;
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -91,48 +104,88 @@ public class HomeController {
 
         CompletableFuture<Void> future = client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
-                .thenAccept(this::processMoviesResponse)
+                .thenAccept(this::processSingleMovieResponse)
                 .exceptionally(this::handleError);
     }
 
-    private void processMoviesResponse(String responseBody) {
+    private void processSingleMovieResponse(String responseBody) {
         try {
-            // Basic parsing to extract movie titles
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(responseBody);
             JsonNode resultsNode = rootNode.get("results");
 
+            System.out.println(resultsNode.toString());
+
+            if (!resultsNode.isEmpty())
+            {
+                JsonNode movieNode = resultsNode.get(0);
+
+                String title = movieNode.get("title").asText("Título Desconhecido");
+                String posterPath = movieNode.path("poster_path").asText("");
+                String overview = movieNode.get("overview").asText("Descrição não disponível");
+
+                Platform.runLater(() -> {
+                    resultTitleLabel.setText(title);
+                    resultOverviewLabel.setText(overview);
+
+                    if (!posterPath.isEmpty()) {
+                        String fullPosterUrl = imageBaseUrl + posterPath;
+                        resultImageView.setImage(new Image(fullPosterUrl));
+                    }
+                });
+
+                currentPage++;
+            }
             moviesList.clear();
-
-            Platform.runLater(() -> {
-                // Clear previous movies
-                moviesGridPane.getChildren().clear();
-
-                // Populate grid with movie titles
-                for (int i = 1; i < resultsNode.size(); i++) {
-                    JsonNode movieNode = resultsNode.get(i);
-                    String title = movieNode.get("title").asText();
-                    String posterPath = movieNode.get("poster_path").asText();
-                    String fullUrl = imageBaseUrl + posterPath;
-
-                    movieData movie = new movieData(title, fullUrl);
-                    moviesList.add(movie);
-
-                    ImageView imageView = new ImageView(new Image(fullUrl));
-                    imageView.setFitWidth(150);
-                    imageView.setFitHeight(150);
-                    imageView.setPreserveRatio(true);
-
-                    Label titleLabel = new Label(title);
-
-                    moviesGridPane.add(imageView, (i) % 3, (i) / 3 * 2);
-                    moviesGridPane.add(titleLabel, (i) % 3, (i) / 3 * 2 + 1);
-                }
-
-                apiResultLabel.setText(moviesList.size()+ " filmes carregados!");
-            });
         } catch (Exception e) {
             handleError(e);
+        }
+    }
+
+    private void setupSaveMovie()
+    {
+        if (saveMovieButton != null) {
+            saveMovieButton.setOnAction(e -> {
+                try {
+                    String title = resultTitleLabel.getText();
+                    String overview = resultOverviewLabel.getText();
+
+                    System.out.println("Saving movie: " + title + " - " + overview);
+
+                    saveMovie(title, overview);
+                } catch (IOException ex) {
+                    // Melhor tratamento da exceção
+                    System.err.println("Error saving the movie: " + ex.getMessage());
+                    ex.printStackTrace();
+                }
+            });
+        }
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.setHeaderText(null);
+        alert.showAndWait();
+    }
+
+    private void saveMovie(String title, String overview) throws IOException {
+        File file = new File("database/films.txt");
+
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            file.createNewFile();
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            writer.write(title);
+            writer.newLine();
+            writer.write(overview);
+            showAlert("Sucesso", "Filme salvo com sucesso");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -142,8 +195,8 @@ public class HomeController {
 
     private Void handleError(Throwable e) {
         Platform.runLater(() -> {
-            if (apiResultLabel != null) {
-                apiResultLabel.setText("Erro na requisição: " + e.getMessage());
+            if (resultTitleLabel != null) {
+                resultTitleLabel.setText("Erro na requisição: " + e.getMessage());
                 e.printStackTrace();
             }
         });
