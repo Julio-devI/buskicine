@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -58,10 +57,6 @@ public class HomeController {
             this.imageUrl = imageUrl;
             this.overview = overview;
         }
-
-        public String getTitle() { return title; }
-        public String getImageUrl() { return imageUrl; }
-        public String getOverview() { return overview; }
     }
 
     private List<movieData> moviesList = new ArrayList<>();
@@ -154,7 +149,6 @@ public class HomeController {
 
                     saveMovie(title, overview);
                 } catch (IOException ex) {
-                    // Melhor tratamento da exceção
                     System.err.println("Error saving the movie: " + ex.getMessage());
                     ex.printStackTrace();
                 }
