@@ -2,6 +2,9 @@ package com.example.projetoptwo.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -29,7 +32,7 @@ public class HomeController {
     private BorderPane root;
 
     @FXML
-    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton, saveMovieButton;
+    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton, saveMovieButton, myMatchButton;
 
     @FXML
     private Label resultTitleLabel;
@@ -79,6 +82,24 @@ public class HomeController {
         closeButton.setOnAction(e -> stage.close());
         minimizeButton.setOnAction(e -> stage.setIconified(true));
         maximizeButton.setOnAction(e -> stage.setFullScreen(!stage.isFullScreen()));
+        myMatchButton.setOnAction(e -> viewMyMatches());
+    }
+
+    private void viewMyMatches() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projetoptwo/matches-view.fxml"));
+            Parent matchesView = loader.load();
+
+            MatchesController matchesController = loader.getController();
+            matchesController.setStage(stage);
+
+            Scene matchesScene = new Scene(matchesView, 600, 400);
+            stage.setScene(matchesScene);
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Error", "Não foi possível carregar a tela de matches: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void setupMovieFetching()

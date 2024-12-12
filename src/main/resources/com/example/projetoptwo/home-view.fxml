@@ -29,7 +29,8 @@
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;">
             <!-- Movie Fetch Button with Improved Styling -->
             <Button
-                    text="Carregar Filmes"
+                    fx:id="myMatchButton"
+                    text="Meus Matches"
                     style="-fx-pref-width: 200px;"/>
 
             <HBox
