@@ -24,6 +24,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
 public class HomeController {
@@ -46,8 +47,6 @@ public class HomeController {
     private Stage stage;
     private double xOffset = 0, yOffset = 0;
 
-    private int currentPage = 1;
-
     private static final String path = "database/films.txt";
 
     public static class movieData {
@@ -61,6 +60,9 @@ public class HomeController {
             this.overview = overview;
         }
     }
+
+    Random random = new Random();
+    private int currentPage = random.nextInt(100);
 
     private List<movieData> moviesList = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public class HomeController {
             MatchesController matchesController = loader.getController();
             matchesController.setStage(stage);
 
-            Scene matchesScene = new Scene(matchesView, 600, 400);
+            Scene matchesScene = new Scene(matchesView, 800, 600);
             stage.setScene(matchesScene);
             stage.show();
         } catch (IOException e) {
@@ -193,16 +195,40 @@ public class HomeController {
             file.createNewFile();
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(title);
-            writer.newLine();
-            writer.write(overview);
-            showAlert("Sucesso", "Filme salvo com sucesso");
+        if (isMovieAlreadySaved(title, file)) {
+            showAlert("Aviso", "O filme já está salvo no arquivo.");
+            return;
         }
-        catch (IOException e) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            writer.write(title.trim());
+            writer.newLine();
+            writer.write(overview.trim());
+            writer.newLine();
+            writer.newLine();
+            showAlert("Sucesso", "Filme salvo com sucesso");
+        } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Erro", "Erro ao salvar o filme: " + e.getMessage());
         }
     }
+
+    private boolean isMovieAlreadySaved(String title, File file) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().equalsIgnoreCase(title.trim())) {
+                    return true;
+                }
+
+                reader.readLine();
+                reader.readLine();
+            }
+        }
+        return false;
+    }
+
 
     public List<movieData> getMoviesList() {
         return new ArrayList<>(moviesList);

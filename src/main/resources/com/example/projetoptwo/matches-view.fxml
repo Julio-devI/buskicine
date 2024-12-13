@@ -15,8 +15,7 @@
     <top>
         <HBox fx:id="windowTitleBar"
               style="-fx-background-color: #E5E5E5;
-                     -fx-padding: 10;
-                     -fx-background-insets: 0;">
+                     -fx-padding: 10;">
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Button fx:id="closeButton"
                         style="-fx-background-color: #FF5F57;
@@ -53,4 +52,15 @@
                       style="-fx-pref-width: 400; -fx-pref-height: 300;" />
         </VBox>
     </center>
+
+    <!-- Botão de Voltar -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 10;">
+            <Button fx:id="backButton" text="Voltar" onAction="#handleBackButton"
+                    style="-fx-background-color: #61afef;
+                           -fx-text-fill: white;
+                           -fx-padding: 10;
+                           -fx-font-size: 14px;" />
+        </HBox>
+    </bottom>
 </BorderPane>
