@@ -2,6 +2,9 @@ package com.example.projetoptwo.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,7 +12,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -31,7 +33,7 @@ public class HomeController {
     private BorderPane root;
 
     @FXML
-    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton, saveMovieButton;
+    private Button closeButton, minimizeButton, maximizeButton, fetchMoviesButton, saveMovieButton, myMatchButton;
 
     @FXML
     private Label resultTitleLabel;
@@ -45,9 +47,6 @@ public class HomeController {
     private Stage stage;
     private double xOffset = 0, yOffset = 0;
 
-    Random random = new Random();
-    private int currentPage = random.nextInt(20);
-
     private static final String path = "database/films.txt";
 
     public static class movieData {
@@ -60,11 +59,10 @@ public class HomeController {
             this.imageUrl = imageUrl;
             this.overview = overview;
         }
-
-        public String getTitle() { return title; }
-        public String getImageUrl() { return imageUrl; }
-        public String getOverview() { return overview; }
     }
+
+    Random random = new Random();
+    private int currentPage = random.nextInt(100);
 
     private List<movieData> moviesList = new ArrayList<>();
 
@@ -86,6 +84,24 @@ public class HomeController {
         closeButton.setOnAction(e -> stage.close());
         minimizeButton.setOnAction(e -> stage.setIconified(true));
         maximizeButton.setOnAction(e -> stage.setFullScreen(!stage.isFullScreen()));
+        myMatchButton.setOnAction(e -> viewMyMatches());
+    }
+
+    private void viewMyMatches() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/projetoptwo/matches-view.fxml"));
+            Parent matchesView = loader.load();
+
+            MatchesController matchesController = loader.getController();
+            matchesController.setStage(stage);
+
+            Scene matchesScene = new Scene(matchesView, 800, 600);
+            stage.setScene(matchesScene);
+            stage.show();
+        } catch (IOException e) {
+            showAlert("Error", "Não foi possível carregar a tela de matches: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void setupMovieFetching()
@@ -157,7 +173,6 @@ public class HomeController {
 
                     saveMovie(title, overview);
                 } catch (IOException ex) {
-                    // Melhor tratamento da exceção
                     System.err.println("Error saving the movie: " + ex.getMessage());
                     ex.printStackTrace();
                 }
@@ -181,16 +196,40 @@ public class HomeController {
             file.createNewFile();
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(title);
-            writer.newLine();
-            writer.write(overview);
-            showAlert("Sucesso", "Filme salvo com sucesso");
+        if (isMovieAlreadySaved(title, file)) {
+            showAlert("Aviso", "O filme já está salvo no arquivo.");
+            return;
         }
-        catch (IOException e) {
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            writer.write(title.trim());
+            writer.newLine();
+            writer.write(overview.trim());
+            writer.newLine();
+            writer.newLine();
+            showAlert("Sucesso", "Filme salvo com sucesso");
+        } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Erro", "Erro ao salvar o filme: " + e.getMessage());
         }
     }
+
+    private boolean isMovieAlreadySaved(String title, File file) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+
+                if (line.trim().equalsIgnoreCase(title.trim())) {
+                    return true;
+                }
+
+                reader.readLine();
+                reader.readLine();
+            }
+        }
+        return false;
+    }
+
 
     public List<movieData> getMoviesList() {
         return new ArrayList<>(moviesList);

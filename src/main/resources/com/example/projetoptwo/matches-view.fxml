@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.projetoptwo.controllers.MatchesController"
+            style="-fx-background-color: #1e1e1e;">
+
+    <!-- Barra Superior -->
+    <top>
+        <HBox fx:id="windowTitleBar"
+              style="-fx-background-color: #2e2e2e;
+                     -fx-padding: 10;">
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Button fx:id="closeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FF5F57, #FF0000);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;"
+                        onAction="#handleCloseButton" />
+                <Button fx:id="minimizeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFBD2E, #FFD700);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;"
+                        onAction="#handleMinimizeButton" />
+                <Button fx:id="maximizeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #28C840, #32CD32);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;"
+                        onAction="#handleMaximizeButton" />
+            </HBox>
+        </HBox>
+    </top>
+
+    <!-- Corpo Principal -->
+    <center>
+        <VBox spacing="10" style="-fx-padding: 20;">
+            <ListView fx:id="matchesListView"
+                      style="-fx-pref-width: 400; -fx-pref-height: 300;" />
+        </VBox>
+    </center>
+
+    <!-- Botão de Voltar -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 10;">
+            <Button fx:id="backButton" text="Voltar" onAction="#handleBackButton"
+                    style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #333333FF, #333333FF);
+                           -fx-text-fill: white;
+                           -fx-font-size: 14px;
+                           -fx-padding: 10px 20px;
+                           -fx-border-radius: 5px;
+                           -fx-background-radius: 5px;" />
+        </HBox>
+    </bottom>
+</BorderPane>

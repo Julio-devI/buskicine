@@ -17,42 +17,6 @@
     -fx-background-color: #98c379;
 }
 
-/* Campo de texto e senha */
-#emailField, #passwordField {
-    -fx-background-color: #2e2e2e !important;
-    -fx-text-fill: #ffffff !important;
-    -fx-border-color: #4b4b4b !important;
-    -fx-border-radius: 5 !important;
-    -fx-background-radius: 5 !important;
-    -fx-prompt-text-fill: #808080 !important;
-}
-
-#emailField:focused, #passwordField:focused {
-    -fx-border-color: #61afef !important;
-}
-
-/* Botões principais */
-#loginButton {
-    -fx-background-color: #61afef !important;
-    -fx-text-fill: #ffffff !important;
-}
-
-#signUpButton {
-    -fx-background-color: #9a62ba !important;
-    -fx-text-fill: #ffffff !important;
-}
-
-#loginButton:hover, #signUpButton:hover {
-    -fx-background-color: #56b5f0 !important; /* Para o loginButton */
-    -fx-background-color: #b574d5 !important; /* Para o signUpButton */
-}
-
-/* Botão de alternar tema */
-#toggleThemeButton {
-    -fx-background-color: #3e3e3e !important;
-    -fx-text-fill: #ffffff !important;
-    -fx-border-color: #4b4b4b !important;
-}
 
 /* Barras de navegação */
 .top {
@@ -61,4 +25,52 @@
 
 #hboxContainer {
     -fx-background-color: #1e1e1e !important;
+}
+
+/* Estilo para o botão Match */
+#matchButton {
+    background: linear-gradient(45deg, #FF6347, #FF4500);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#matchButton:hover {
+    background: linear-gradient(45deg, #FF4500, #FF6347);
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(255, 69, 0, 0.5);
+}
+
+/* Estilo para o botão Próximo Filme */
+#nextMovieButton {
+    background: linear-gradient(45deg, #1E90FF, #4169E1);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#nextMovieButton:hover {
+    background: linear-gradient(45deg, #4169E1, #1E90FF);
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(30, 144, 255, 0.5);
+}
+
+/* Estilo para o botão Meus Matches */
+#myMatchesButton {
+    background: linear-gradient(45deg, #32CD32, #228B22);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#myMatchesButton:hover {
+    background: linear-gradient(45deg, #228B22, #32CD32);
+    transform: scale(1.1);
+    box-shadow: 0px 4px 10px rgba(50, 205, 50, 0.5);
 }
