@@ -4,7 +4,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
@@ -28,6 +31,36 @@ public class MatchesController {
     @FXML
     public void initialize() {
         loadMoviesFromFile();
+
+        // Configurar as células do ListView para ajustar o texto com quebra de linha
+        matchesListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    // Usar TextFlow para exibir texto ajustável
+                    TextFlow textFlow = new TextFlow();
+                    textFlow.setPrefWidth(matchesListView.getWidth() - 30); // Ajusta à largura do ListView
+
+                    Text text = new Text(item);
+                    text.setWrappingWidth(matchesListView.getWidth() - 50); // Configura quebra de linha automática
+                    textFlow.getChildren().add(text);
+
+                    setGraphic(textFlow);
+                }
+            }
+        });
+
+        // Listener para ajustar dinamicamente a largura ao redimensionar
+        matchesListView.widthProperty().addListener((obs, oldVal, newVal) -> {
+            matchesListView.refresh(); // Atualiza as células para refletir a nova largura
+        });
+
+        // Remover barras horizontais no ListView (CSS embutido)
+        matchesListView.setStyle("-fx-hbar-policy: never;");
     }
 
     private void loadMoviesFromFile() {
@@ -98,5 +131,4 @@ public class MatchesController {
             e.printStackTrace();
         }
     }
-
 }

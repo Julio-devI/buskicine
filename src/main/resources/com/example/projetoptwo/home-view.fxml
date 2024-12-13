@@ -9,68 +9,90 @@
 
 <BorderPane fx:id="root" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.projetoptwo.controllers.HomeController"
-            styleClass="root-pane">
+            style="-fx-background-color: #1e1e1e;">
 
-    <!-- Window Title Bar with MacOS-like Close, Minimize, Maximize Buttons -->
+    <!-- Barra Superior com Botões Coloridos -->
     <top>
         <HBox fx:id="windowTitleBar"
-              style="-fx-background-color: #E5E5E5;
-                     -fx-padding: 10;
-                     -fx-background-insets: 0;">
+              style="-fx-background-color: #2e2e2e;
+                     -fx-padding: 10;">
             <HBox alignment="CENTER_LEFT" spacing="10">
-                <Button fx:id="closeButton" style="-fx-background-color: #FF5F57; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
-                <Button fx:id="minimizeButton" style="-fx-background-color: #FFBD2E; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
-                <Button fx:id="maximizeButton" style="-fx-background-color: #28C840; -fx-background-radius: 50%; -fx-min-width: 12px; -fx-min-height: 12px; -fx-max-height: 12px; -fx-max-width: 12px;" />
+                <Button fx:id="closeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FF5F57, #FF0000);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;" />
+                <Button fx:id="minimizeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #FFBD2E, #FFD700);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;" />
+                <Button fx:id="maximizeButton"
+                        style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #28C840, #32CD32);
+                               -fx-background-radius: 50%;
+                               -fx-min-width: 12px;
+                               -fx-min-height: 12px;
+                               -fx-max-height: 12px;
+                               -fx-max-width: 12px;" />
             </HBox>
         </HBox>
     </top>
 
+    <!-- Conteúdo Principal -->
     <center>
         <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20;">
-            <!-- Movie Fetch Button with Improved Styling -->
-            <Button
-                    fx:id="myMatchButton"
-                    text="Meus Matches"
-                    style="-fx-pref-width: 200px;"/>
+            <!-- Botão Meus Matches -->
+            <Button fx:id="myMatchButton" text="Meus Matches"
+                    style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #333333FF, #333333FF );
+                           -fx-text-fill: white;
+                           -fx-font-size: 14px;
+                           -fx-padding: 10px 20px;
+                           -fx-border-radius: 5px;
+                           -fx-background-radius: 5px;" />
 
-            <HBox
-                    fx:id="movieDetailsContainer"
-                    spacing="20"
-                    style="-fx-background-color: white;
-                       -fx-padding: 20;
-                       -fx-background-radius: 10;
-                       -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);">
-
-                <!-- Movie Poster Section -->
+            <!-- Container de Detalhes do Filme -->
+            <HBox fx:id="movieDetailsContainer" spacing="20"
+                  style="-fx-background-color: white;
+                         -fx-padding: 20;
+                         -fx-background-radius: 10;
+                         -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 0);">
+                <!-- Seção do Poster -->
                 <VBox alignment="CENTER_LEFT" spacing="10">
-                    <ImageView
-                            fx:id="resultImageView"
-                            fitWidth="200"
-                            fitHeight="300"
-                            preserveRatio="true"
-                            style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);"/>
+                    <ImageView fx:id="resultImageView" fitWidth="200" fitHeight="300" preserveRatio="true"
+                               style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);" />
                 </VBox>
 
-                <!-- Movie Details Text Section -->
+                <!-- Detalhes do Filme -->
                 <VBox spacing="15" alignment="TOP_LEFT" HBox.hgrow="ALWAYS">
-                    <Label
-                            fx:id="resultTitleLabel"
-                            text="Título do Filme"/>
+                    <Label fx:id="resultTitleLabel" text="Título do Filme"
+                           style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333;" />
 
-                    <Label
-                            fx:id="resultOverviewLabel"
-                            text="Descrição do filme vai aqui. Um texto explicativo que pode ser longo ou curto, dependendo do conteúdo."
-                            wrapText="true"/>
+                    <Label fx:id="resultOverviewLabel"
+                           text="Descrição do filme vai aqui. Um texto explicativo que pode ser longo ou curto, dependendo do conteúdo."
+                           wrapText="true"
+                           style="-fx-font-size: 14px; -fx-text-fill: #555;" />
 
-                    <!-- Action Buttons -->
+                    <!-- Botões de Ação -->
                     <HBox spacing="15" alignment="CENTER_LEFT">
-                        <Button
-                                fx:id="saveMovieButton"
-                                text="Match"/>
+                        <Button fx:id="saveMovieButton" text="Match"
+                                style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #ce4f71, #db7093);
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-padding: 10px 20px;
+                                       -fx-border-radius: 5px;
+                                       -fx-background-radius: 5px;" />
 
-                        <Button
-                                fx:id="fetchMoviesButton"
-                                text="Próximo Filme"/>
+                        <Button fx:id="fetchMoviesButton" text="Próximo Filme"
+                                style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #32CD32, #228B22);
+                                       -fx-text-fill: white;
+                                       -fx-font-size: 14px;
+                                       -fx-padding: 10px 20px;
+                                       -fx-border-radius: 5px;
+                                       -fx-background-radius: 5px;" />
                     </HBox>
                 </VBox>
             </HBox>
